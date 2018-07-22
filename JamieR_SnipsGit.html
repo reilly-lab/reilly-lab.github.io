@@ -128,7 +128,7 @@ $(document).ready(function () {
 
 <div id="read-in-a-csv-file-from-a-github-url" class="section level3">
 <h3>read in a csv file from a github url</h3>
-<p>read in data from a URL using the readr package. Make sure permalink is to the raw data on Github.</p>
+<p>read in data from a URL using the readr package. make sure permalink directs to raw data on Github.</p>
 <pre class="r"><code>require(readr)
 url &lt;- read_csv(&quot;https://raw.githubusercontent.com/reilly-lab/reilly-lab.github.io/master/BoyGirl.csv&quot;, col_names=TRUE)
 print(url)</code></pre>
@@ -149,22 +149,46 @@ head(vec, n=5)</code></pre>
 <pre><code>## [1] 47.19762 48.84911 57.79354 50.35254 50.64644</code></pre>
 <p> </p>
 </div>
-<div id="generate-a-dataframe-populate-it-with-numbers-from-a-random-normal-distribution-mean0-sd1-change-it-to-a-tibble-view-the-first-five-rows" class="section level3">
-<h3>generate a dataframe, populate it with numbers from a random normal distribution (mean=0, sd=1), change it to a tibble, view the first five rows</h3>
+<div id="generate-a-dummy-dataframe-dat" class="section level3">
+<h3>generate a dummy dataframe ‘dat’</h3>
+<p>populate it with numbers from a random normal distribution (mean=0, sd=1), change it to a tibble, view the first five rows</p>
 <pre class="r"><code>dat &lt;- as_tibble(data.frame(cbind(&quot;a&quot;=rnorm(10), &quot;b&quot;=rnorm(10), &quot;c&quot;=rnorm(10))))
-head(dat, n=5)</code></pre>
-<pre><code>## # A tibble: 5 x 3
+head(dat)</code></pre>
+<pre><code>## # A tibble: 6 x 3
 ##         a      b      c
 ##     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
 ## 1  0.253   0.380 -0.491
 ## 2 -0.0285 -0.502 -2.31 
 ## 3 -0.0429 -0.333  1.01 
 ## 4  1.37   -1.02  -0.709
-## 5 -0.226  -1.07  -0.688</code></pre>
+## 5 -0.226  -1.07  -0.688
+## 6  1.52    0.304  1.03</code></pre>
 <p> </p>
 </div>
-<div id="change-a-single-column-name-in-the-dataframe-from-a-to-somethingelse" class="section level3">
-<h3>change a single column name in the dataframe, from “a” to “SomethingElse”</h3>
+<div id="append-a-grouping-variable-to-dat" class="section level3">
+<h3>append a grouping variable to dat</h3>
+<p>generate a vector of letters that will serve as a grouping variable and bind it to dat</p>
+<pre class="r"><code>letvec &lt;- c(rep(&quot;a&quot;, 5), rep(&quot;b&quot;,5))
+mat.b &lt;- cbind(dat, letvec)
+head(mat.b)</code></pre>
+<pre><code>##             a          b          c letvec
+## 1  0.25331851  0.3796395 -0.4910312      a
+## 2 -0.02854676 -0.5023235 -2.3091689      a
+## 3 -0.04287046 -0.3332074  1.0057385      a
+## 4  1.36860228 -1.0185754 -0.7092008      a
+## 5 -0.22577099 -1.0717912 -0.6880086      a
+## 6  1.51647060  0.3035286  1.0255714      b</code></pre>
+<pre class="r"><code>str(mat.b)</code></pre>
+<pre><code>## 'data.frame':    10 obs. of  4 variables:
+##  $ a     : num  0.2533 -0.0285 -0.0429 1.3686 -0.2258 ...
+##  $ b     : num  0.38 -0.502 -0.333 -1.019 -1.072 ...
+##  $ c     : num  -0.491 -2.309 1.006 -0.709 -0.688 ...
+##  $ letvec: Factor w/ 2 levels &quot;a&quot;,&quot;b&quot;: 1 1 1 1 1 2 2 2 2 2</code></pre>
+<p> </p>
+</div>
+<div id="change-a-single-column-name-in-dat" class="section level3">
+<h3>change a single column name in ‘dat’</h3>
+<p>in the dataframe we just created, from “a” to “SomethingElse”</p>
 <pre class="r"><code>new.dat &lt;- dat %&gt;% rename(SomethingElse = a)
 head(new.dat, n=5)</code></pre>
 <pre><code>## # A tibble: 5 x 3
@@ -177,8 +201,9 @@ head(new.dat, n=5)</code></pre>
 ## 5       -0.226  -1.07  -0.688</code></pre>
 <p> </p>
 </div>
-<div id="melt-the-dataframe-from-the-previous-step-from-wideto-long-form-rename-the-column-headers" class="section level3">
-<h3>melt the dataframe from the previous step from wideto long form, rename the column headers</h3>
+<div id="melt-the-dataframe-dat-from-wide-to-long-form-write-to-melt.dat" class="section level3">
+<h3>melt the dataframe ‘dat’ from wide to long form, write to ‘melt.dat’</h3>
+<p>using the dplyr pipe %&gt;%, then rename the column headers</p>
 <pre class="r"><code>melt.dat &lt;- new.dat %&gt;% melt(measure.vars=1:3, variable.name=&quot;group&quot;, value.name=&quot;iq&quot;)
 head(melt.dat)</code></pre>
 <pre><code>##           group          iq
@@ -198,9 +223,9 @@ some.dat$ group &lt;- factor(some.dat$group)
 levels(some.dat$group)</code></pre>
 <pre><code>## [1] &quot;b&quot; &quot;c&quot;</code></pre>
 <p> </p>
-<div id="populate-a-matrix-with-random-numbers-name-the-rows-and-columns" class="section level3">
-<h3>populate a matrix with random numbers, name the rows and columns</h3>
-<p>generate a 3x3 matrix, setting seed for reproducibility, name the rows and columns</p>
+<div id="generate-a-matrix" class="section level3">
+<h3>generate a matrix</h3>
+<p>populate a 3x3 matrix with random numbers by rows (N=3). set seed for reproducibility), name the rows and columns</p>
 <pre class="r"><code>set.seed(1234)
 mat &lt;- matrix(rnorm(9), nrow=3)
 rownames(mat) &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
