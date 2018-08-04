@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jamie Reilly, Ph.D." />
 
-<meta name="date" content="2018-08-03" />
+<meta name="date" content="2018-08-04" />
 
 <title>R Plot Annotation (mostly ggplot2)</title>
 
@@ -70,6 +70,7 @@ h6 {
 }
 </style>
 
+<link href="data:text/css;charset=utf-8,%0Abody%7B%0Afont%2Dfamily%3A%20Helvetica%3B%0Afont%2Dsize%3A%2014pt%3B%0A%7D%0A%0Ah1%2Ch2%2Ch3%2Ch4%2Ch5%2Ch6%7B%0Afont%2Dsize%3A%2024pt%3B%0A%7D%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -121,15 +122,15 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">R Plot Annotation (mostly ggplot2)</h1>
 <h4 class="author"><em>Jamie Reilly, Ph.D.</em></h4>
-<h4 class="date"><em>2018-08-03</em></h4>
+<h4 class="date"><em>2018-08-04</em></h4>
 
 </div>
 
 <div id="TOC">
 <ul>
 <li><a href="#introduction"><span style="color:maroon">Introduction</span></a></li>
-<li><a href="#custom-theme-for-ggplot2"><span style="color:maroon">Custom theme for ggplot2</span></a></li>
-<li><a href="#adjusting-axes"><span style="color:maroon">Adjusting axes</span></a><ul>
+<li><a href="#a-custom-theme-for-ggplot2"><span style="color:maroon">A custom theme for ggplot2</span></a></li>
+<li><a href="#axis-adjustments-limits-breaks-etc."><span style="color:maroon">Axis adjustments (limits, breaks, etc.)</span></a><ul>
 <li><a href="#specify-user-defined-axis-breaks">specify user-defined axis breaks</a></li>
 <li><a href="#set-axis-limits-manually">set axis limits manually</a></li>
 <li><a href="#zoom-in-on-a-specific-range-using-coord_cartesian">zoom in on a specific range using coord_cartesian</a></li>
@@ -153,31 +154,31 @@ $(document).ready(function () {
 
 <div id="introduction" class="section level1">
 <h1><span style="color:maroon">Introduction</span></h1>
-<p>R has a steep learning curve. Novices like myself often find it useful to cannibalize and modify someone else’s code. This website offers just such a resource. If you have a plot that you are particularly proud of, please feel free to send me the code. I will post it here and acknowledge you as author.</p>
-<p>Half the battle of R is reading the data in. If you plan to share a code snippet, consider posting your data to a public repository. You can send a link, and R will read the data in. This obviates the necessity for unique working directories for each user. The ‘read_csv’ command from the readr library works pretty well. You can also link to Google Drive or a similar public URL, but Github seems to work the smoothest. Here’s sample code that successfully reads data in from a CSV file posted on my lab’s Github repository.</p>
+<p>R has a steep learning curve. It is often useful to cannibalize and modify someone else’s code rather than starting from scratch. This website offers just such a resource. If you have a plot that you are particularly proud of, please feel free to send me the code. I will post it here and acknowledge you as author.</p>
+<p>Often half the battle of R is reading the data in. If you plan to share a code snippet, consider posting your data to a public repository. You can send a link, and R will read the data in. This obviates unique working directories for each user. The ‘read_csv’ command from the readr library works pretty well. You can also link to Google Drive or a similar public URL, but Github seems to work the smoothest.</p>
+<p>Here’s sample code that successfully reads data in from a CSV file posted on my lab’s Github repository.</p>
 <pre class="r"><code>url.dat &lt;- read_csv(&quot;https://raw.githubusercontent.com/reilly-lab/reilly-lab.github.io/master/BoyGirl.csv&quot;, 
     col_names = TRUE)</code></pre>
-<p>Here are the libraries we will be using.</p>
+<p>Here are some libraries we will be using.</p>
 <pre class="r"><code>library(plyr)
 library(reshape2)
 library(tidyverse)
 library(readr)
 library(formatR)
-library(knitr)
-library(prettydoc)</code></pre>
-<p><br /><br /></p>
+library(knitr)</code></pre>
+<p><br /></p>
 </div>
-<div id="custom-theme-for-ggplot2" class="section level1">
-<h1><span style="color:maroon">Custom theme for ggplot2</span></h1>
+<div id="a-custom-theme-for-ggplot2" class="section level1">
+<h1><span style="color:maroon">A custom theme for ggplot2</span></h1>
 <p>Here’s a minimalist home brew theme for ggplot2. I’ll add this to most of the plots to follow. It strips panel gridlines and all sorts of other default junk.</p>
 <pre class="r"><code>jamie.theme &lt;- theme_bw() + theme(axis.line = element_line(colour = &quot;black&quot;), 
     panel.grid.minor = element_blank(), panel.grid.major = element_blank(), 
     panel.border = element_blank(), panel.background = element_blank(), legend.title = element_blank())</code></pre>
 <p><br /><br /></p>
 </div>
-<div id="adjusting-axes" class="section level1">
-<h1><span style="color:maroon">Adjusting axes</span></h1>
-<p>ggplot2 can be a bit challenging WRT getting the axis formatted the way you want. Let’s first generate a dataframe populated with random sampled data from 1-100 with replacement; plot the data (100 points). set the seed for reproducibility.</p>
+<div id="axis-adjustments-limits-breaks-etc." class="section level1">
+<h1><span style="color:maroon">Axis adjustments (limits, breaks, etc.)</span></h1>
+<p>ggplot2 can be a bit challenging wrt getting the axis formatted the way you want. Let’s first generate a dataframe populated with random sampled data from 1-100 without replacement; plot the data (100 points). set the seed for reproducibility.</p>
 <pre class="r"><code>set.seed(999)
 dat &lt;- data.frame(replicate(2, sample(0:100, 100, rep = F)))
 baseplot &lt;- ggplot(dat, aes(X1, X2)) + geom_point(shape = 21, fill = &quot;blue&quot;, 
