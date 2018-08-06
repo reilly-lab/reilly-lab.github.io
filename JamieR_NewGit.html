@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jamie Reilly, Ph.D." />
 
-<meta name="date" content="2018-07-22" />
+<meta name="date" content="2018-08-02" />
 
 <title>code snippets for working with dataframes &amp; matrices</title>
 
@@ -121,17 +121,15 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">code snippets for working with dataframes &amp; matrices</h1>
 <h4 class="author"><em>Jamie Reilly, Ph.D.</em></h4>
-<h4 class="date"><em>2018-07-22</em></h4>
+<h4 class="date"><em>2018-08-02</em></h4>
 
 </div>
 
 
-<p>is this different?</p>
 <div id="read-in-a-csv-file-from-a-github-url" class="section level3">
 <h3>read in a csv file from a github url</h3>
 <p>read in data from a URL using the readr package. make sure permalink directs to raw data on Github.</p>
-<pre class="r"><code>require(readr)
-url &lt;- read_csv(&quot;https://raw.githubusercontent.com/reilly-lab/reilly-lab.github.io/master/BoyGirl.csv&quot;, col_names=TRUE)
+<pre class="r"><code>url &lt;- read_csv(&quot;https://raw.githubusercontent.com/reilly-lab/reilly-lab.github.io/master/BoyGirl.csv&quot;, col_names=TRUE)
 print(url)</code></pre>
 <pre><code>## # A tibble: 3 x 2
 ##     boy  girl
@@ -150,8 +148,8 @@ head(vec, n=5)</code></pre>
 <pre><code>## [1] 47.19762 48.84911 57.79354 50.35254 50.64644</code></pre>
 <p> </p>
 </div>
-<div id="generate-a-dummy-dataframe-dat" class="section level3">
-<h3>generate a dummy dataframe ‘dat’</h3>
+<div id="generate-a-dataframe-dat-populated-with-random-normal-dist." class="section level3">
+<h3>generate a dataframe ‘dat’ populated with random normal dist.</h3>
 <p>populate it with numbers from a random normal distribution (mean=0, sd=1), change it to a tibble, view the first five rows</p>
 <pre class="r"><code>dat &lt;- as_tibble(data.frame(cbind(&quot;a&quot;=rnorm(10), &quot;b&quot;=rnorm(10), &quot;c&quot;=rnorm(10))))
 head(dat)</code></pre>
@@ -164,6 +162,20 @@ head(dat)</code></pre>
 ## 4  1.37   -1.02  -0.709
 ## 5 -0.226  -1.07  -0.688
 ## 6  1.52    0.304  1.03</code></pre>
+<p> </p>
+</div>
+<div id="another-way-to-create-a-dataframe-sampling-a-specific-range" class="section level3">
+<h3>another way to create a dataframe, sampling a specific range</h3>
+<p>here’s another dataframe created with the replicate and sample function. The sample function is: sample(x, size, replace = FALSE)</p>
+<pre class="r"><code>set.seed(190)
+dat.other &lt;- data.frame(replicate(2,sample(0:100,100,replace=TRUE)))
+head(dat.other, n=5)</code></pre>
+<pre><code>##   X1  X2
+## 1 69  18
+## 2 71  88
+## 3  6  92
+## 4 93 100
+## 5 91  99</code></pre>
 <p> </p>
 </div>
 <div id="append-a-grouping-variable-to-dat" class="section level3">
