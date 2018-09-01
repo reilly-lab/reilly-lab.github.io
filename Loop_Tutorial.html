@@ -144,31 +144,27 @@ $(document).ready(function () {
 </ul>
 </div>
 
-<p>Here are some libraries we will be using.</p>
-<pre class="r"><code>library(reshape2)  #melt and cast
-library(tidyverse)  #ggplot2 and dplyr
-library(tibble)</code></pre>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
-<p>We often find ourselves creating new variables that are involve some weird linear (or nonlinear) transormation of other variables. Sometimes we do this because the underlying distributions of our data violate the assumptions of particular statistical tests. For example, reaction time data are notoriously skewed, typically necessitatibng some transormation (e.g., arcsin). There are many different ways of transorming data and/or applying functions to specific grouping variables. Loops, lapply, mutate, if, elseif – all of these things can do the job but in different ways.</p>
+<p>We often need to create new variables that involve weird linear (or nonlinear) transormations of other variables. Sometimes these transformations are driven by assumptions of particular statistical tests (e.g., normality). There are many different ways of transorming data and/or applying functions to specific grouping variables. Loops, lapply, mutate, if, elseif – all of these do the job in different ways.</p>
 </div>
 <div id="functions" class="section level1">
 <h1><span class="header-section-number">2</span> Functions</h1>
-<p>TBD</p>
 <div id="if" class="section level2">
 <h2><span class="header-section-number">2.1</span> if</h2>
+<p>tbd</p>
 </div>
 <div id="elseif" class="section level2">
 <h2><span class="header-section-number">2.2</span> elseif</h2>
+<p>tbd</p>
 </div>
 </div>
 <div id="loops" class="section level1">
 <h1><span class="header-section-number">3</span> Loops</h1>
-<p>A loop executes a function, then executes it over and over until the list terminates (or forever if you’re not careful in specifying a break). There are several different types of loop (for, while). There is also some common nomenclature that can be a bit confusing. <br /></p>
-<p><em>i</em> is known as an index. <em>i</em>=0 means the 0th observation. <br /></p>
-<p>The generic form of a ‘for’ loop is: <br /></p>
-<p>for (i in X) { <br /></p>
-<p>do something <br /> }</p>
+<p>A loop executes a function over and over until the list terminates (or forever if you’re not careful in specifying a break). There are several different types of loop (for, while). <br /></p>
+<p>The most basic, generic form of a ‘for’ loop is: <br /></p>
+<p>for (i in dat) { <br /></p>
+<p>bla bla bla function that repeats over observations <br /> }</p>
 <div id="for-loops" class="section level2">
 <h2><span class="header-section-number">3.1</span> ‘for’ loops</h2>
 <p>Let’s start super simple – ‘For’ loops. Generate a sequence of numbers from 1-5, square each number, print the output.</p>
@@ -180,7 +176,7 @@ library(tibble)</code></pre>
 ## [1] 9
 ## [1] 16
 ## [1] 25</code></pre>
-<p>Now let’s index a vetor using a ‘for’ loop where we just square something.</p>
+<p>Now let’s index a predetermined vector using a ‘for’ loop where we just square the original value.</p>
 <pre class="r"><code>myvec &lt;- c(-3, 2, 1, 7, 5)
 for (i in myvec) {
     print(i^2)
@@ -190,14 +186,14 @@ for (i in myvec) {
 ## [1] 1
 ## [1] 49
 ## [1] 25</code></pre>
-<p>Create an empty vector and populate it with numeric input from a simple ‘for’ loop (this is a process known as pre-allocation). This just multiplies every observation by 4. ‘storage’ is then available outside the function as a newly populated vector.</p>
+<p>Create an empty vector and populate it with numeric input from a simple ‘for’ loop. This process of setting up an empty basket is known as pre-allocation. In this loop, we’ll just multiply a sequence of five numbers by 4, dumping each result into the ‘storage’ vector.</p>
 <pre class="r"><code>storage &lt;- numeric(5)  #creates an empty vector 5 elements long
 for (i in 1:5) {
     storage[i] &lt;- i * 4  #fills the storage vector, the i-th element of storage is filled with i*4
 }
 print(storage)</code></pre>
 <pre><code>## [1]  4  8 12 16 20</code></pre>
-<p>Use a nested for loop to create a multiplication table. This clever little loop first involves pre-allocating an empty 8 x 8 matrix that will receive loop output. Matrix notation here is <em>i</em>=row index, <em>j</em>=column index</p>
+<p>Vectors are pretty easy. Here’s pre-allocation for a matrix. It’s not much harder. Use a nested for loop to create a multiplication table. This clever little loop first involves pre-allocating an empty 8 x 8 matrix that will receive loop output. Matrix notation here is <em>i</em>=row index, <em>j</em>=column index.</p>
 <pre class="r"><code>TT &lt;- matrix(data = NA, nrow = 8, ncol = 8)  #creates an empty matrix of missing values
 for (i in 1:8)   #row sequence 1:8
   {
@@ -216,7 +212,7 @@ print(TT)</code></pre>
 ## [6,]    6   12   18   24   30   36   42   48
 ## [7,]    7   14   21   28   35   42   49   56
 ## [8,]    8   16   24   32   40   48   56   64</code></pre>
-<p><br /> <br /></p>
+<p><br /></p>
 </div>
 <div id="while-loops" class="section level2">
 <h2><span class="header-section-number">3.2</span> ‘while’ loops</h2>
