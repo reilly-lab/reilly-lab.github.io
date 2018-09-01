@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jamie Reilly, Ph.D." />
 
-<meta name="date" content="2018-08-31" />
+<meta name="date" content="2018-09-01" />
 
 <title>Functions, Loops, &amp; Data Transformations</title>
 
@@ -122,7 +122,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Functions, Loops, &amp; Data Transformations</h1>
 <h4 class="author"><em>Jamie Reilly, Ph.D.</em></h4>
-<h4 class="date"><em>2018-08-31</em></h4>
+<h4 class="date"><em>2018-09-01</em></h4>
 
 </div>
 
@@ -130,8 +130,8 @@ $(document).ready(function () {
 <ul>
 <li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
 <li><a href="#functions"><span class="toc-section-number">2</span> Functions</a><ul>
-<li><a href="#if"><span class="toc-section-number">2.1</span> if</a></li>
-<li><a href="#elseif"><span class="toc-section-number">2.2</span> elseif</a></li>
+<li><a href="#if-function"><span class="toc-section-number">2.1</span> if function</a></li>
+<li><a href="#elseif-function"><span class="toc-section-number">2.2</span> elseif function</a></li>
 </ul></li>
 <li><a href="#loops"><span class="toc-section-number">3</span> Loops</a><ul>
 <li><a href="#for-loops"><span class="toc-section-number">3.1</span> ‘for’ loops</a></li>
@@ -150,12 +150,35 @@ $(document).ready(function () {
 </div>
 <div id="functions" class="section level1">
 <h1><span class="header-section-number">2</span> Functions</h1>
-<div id="if" class="section level2">
-<h2><span class="header-section-number">2.1</span> if</h2>
+<p>Many R functions under the hood automagically. However, sometimes it’s quite useful to develop your own functions. Functions take the generic form: <br /></p>
+<p>function(arguments) {body}</p>
+<p>The body of a function is where the magic happens. Arguments are fed into the function and executed. Here’s a function that simply adds two numbers together. The nice thing about functions is that you can call them whenever you need it rather than doing a repetitive computation and/or transformation. The irony in the example to follow is that it takes longer to type funk.it(9,3) than just 9+3. However, you get the idea.</p>
+<pre class="r"><code>funk.it &lt;- function(a, b) {
+    a + b
+}  #convention is to drop the curly bracket on its own line. You'll see why later.
+funk.it(9, 3)</code></pre>
+<pre><code>## [1] 12</code></pre>
+<p>Let’s do something crazy like create a custom function (called i.mean.it) that generates the mean from a specified vector. Will this work?</p>
+<pre class="r"><code>complicated.vec &lt;- c(10, 20, 45, NA)  #play data where we know the mean in advance, X=25.
+i.mean.it &lt;- function(x) {
+    sum(x)/length(x)  #length X only includes observations that are not na
+}
+i.mean.it(complicated.vec)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>Yikes. No. It doesn’t work. We need the function to account for missing values both in the numerator and denominator. If you sum an NA in the numnerator, you get NA. If you sum NAs in the count of the denominator, however, you’ll inflate the number of observations. Missing observation(s) are a double whammy for this function. What to do?</p>
+<p>I’m so glad you asked. Here’s a function called ‘i.really.mean.it’ that calculates a mean with the all-important caveat that it ignores missing observations – dropping all NA’s from the sum() and length() commands.</p>
+<pre class="r"><code>i.really.mean.it &lt;- function(x) {
+    sum(x, na.rm = T)/length(x[!is.na(x)])  #length x only includes observations that are not na
+}
+i.really.mean.it(complicated.vec)  #run the 'mean' function on the test vector</code></pre>
+<pre><code>## [1] 25</code></pre>
+<p>voila! now you can apply ‘i.really.mean.it’ to calculate any vector of numbers, even when there are missing values. Alternatively you could just skip all that and use the base R mean() function, but then you wouldn’t have the satisfaction of writing your own function. If you are interested in the global application of functions, check out ‘scoping’.</p>
+<div id="if-function" class="section level2">
+<h2><span class="header-section-number">2.1</span> if function</h2>
 <p>tbd</p>
 </div>
-<div id="elseif" class="section level2">
-<h2><span class="header-section-number">2.2</span> elseif</h2>
+<div id="elseif-function" class="section level2">
+<h2><span class="header-section-number">2.2</span> elseif function</h2>
 <p>tbd</p>
 </div>
 </div>
@@ -164,10 +187,10 @@ $(document).ready(function () {
 <p>A loop executes a function over and over until the list terminates (or forever if you’re not careful in specifying a break). There are several different types of loop (for, while). <br /></p>
 <p>The most basic, generic form of a ‘for’ loop is: <br /></p>
 <p>for (i in dat) { <br /></p>
-<p>bla bla bla function that repeats over observations <br /> }</p>
+<p>function that repeats over observations <br /> }</p>
 <div id="for-loops" class="section level2">
 <h2><span class="header-section-number">3.1</span> ‘for’ loops</h2>
-<p>Let’s start super simple – ‘For’ loops. Generate a sequence of numbers from 1-5, square each number, print the output.</p>
+<p>Starting super simple – ‘For’ loops. Generate a sequence of numbers from 1-5, square each number, print the output.</p>
 <pre class="r"><code>for (i in 1:5) {
     print(i^2)
 }</code></pre>
