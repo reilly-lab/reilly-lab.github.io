@@ -140,8 +140,10 @@ library(tidyverse)
 library(reshape2)</code></pre>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
-<p>Many of us are steeped in the tradition of Null Hypothesis Significance Testing (NHST). Under the null hypothesis (H0), there is no difference between conditions. The null hypothesis is that Philly kids are just as bad as spelling at NYC kids, whereas the alternative hypothesis is that Philly kids are better spellers than NYC kids (one-tailed directional alternative).</p>
-<p>Under NHST, the burden of proof is upon us to reject the null. The problem is that sometimes we are not interested in differences but instead in evaluating group equivalence. Let’s say, for example, you are an EPA hydrologist with a principled hypothesis that Seattle and Portland have about the same frequency of rainfall. Even under Scott Pruitt’s EPA, you can’t evaluate this equivalence hypothesis using a standard parametric t-test of differences. Instead, you need an equivalence test. Some people use Bayes Factors as oblique evidence for equivalence. Others (including past versions of me) plead ignorance and report the null as evidence for equivalence until a savvy reviewer slaps your hand. The good news is that you (*even you!) can test for equivalence.</p>
+<p>Many of us are steeped in the tradition of Null Hypothesis Significance Testing (NHST). Under the null hypothesis (H0), there is no difference between conditions. The null hypothesis is that kids from Philly do not differ from kids from NYC by spelling ability. The alternative hypothesis is that Philly &gt; NYC. This particular example is a directional or one-tailed hypothesis. <br /></p>
+<p>Under NHST, the burden of proof is upon us to reject the null. That’s a problem when we are really interested in evaluating equivalence. Let’s say, for example, you are an EPA hydrologist. You think that Seattle and Portland have about the same frequency of rainfall. Even under Scott Pruitt’s EPA, you can’t evaluate this hypothesis using a frequentist test of differences. Instead, you need an equivalence test. <br /></p>
+<p>Some people use Bayes Factors as oblique evidence for equivalence. Others plead ignorance and report the null as evidence for equivalence. I did this until about two months ago when a savvy reviewer slapped my hand. The good news is that <strong>even you</strong> can test for equivalence.<br />
+<br /></p>
 </div>
 <div id="equivalence-testing" class="section level1">
 <h1><span class="header-section-number">2</span> Equivalence Testing</h1>
@@ -160,9 +162,9 @@ head(c)</code></pre>
 ## 4  5.308605  5.308605
 ## 5 10.858249 10.858249
 ## 6 11.012112 11.012112</code></pre>
-<p>Variables ‘a’ and ‘b’ sure look equivalent to me. We need a statistic that shows us that the distributions are equivalent. In standard NHST, the null hypothesis is the no difference hypothesis. If you ‘accept’ the null, are you justified in concluding that the distributions are equivalent?<br />
+<p>Variables ‘a’ and ‘b’ sure look equivalent. Now we need a statistic. In standard NHST, the null hypothesis is the no difference hypothesis. If you ‘accept’ the null, are you justified in concluding that the distributions are equivalent?<br />
 <br /></p>
-<p>No! Absence of difference is not the same as equivalence. It’s an easy trap to fall into much like our legal system where the null hypothesis equivalent is the assumption of innocence, or more accurately stated in null hypothesis form, not guilty.</p>
+<p>No! Absence of difference is not the same as equivalence. It’s an easy fallacy to fall into – much like our legal system where the system works from the assumption of innocence (…ahem, sure). <br /></p>
 <p>With equivalence testing, the null hypothesis is flipped on its head. That is, you start with the assumption of a difference, and you must then overcome the burden of proof to show equivalence (i.e., p&lt;.05 indicates equivalence not difference). As a sanity check, let’s run a TOST test on the two identical distributions we generated above – assuming they are independent.</p>
 <pre class="r"><code>tost(c$a, c$b, epsilon = 1, paired = F, var.equal = T, conf.level = 0.95)</code></pre>
 <pre><code>## 
@@ -209,7 +211,9 @@ print(dense11)</code></pre>
 ##  -1.2278241 -0.9365976
 ## Null hypothesis of statistical difference is: not rejected 
 ## TOST p-value: 0.8235223</code></pre>
-<p>No! You fail to reject the null. That means you cannot conclude that ‘a’ and ‘b’ are equivalent. Note the wording here – the paradox is that ‘not equivalent’ does not mean the same thing as different. I know. I know. semantics! Now just as another sanity check, let’s run a standard t-test on a:z</p>
+<p>No! You fail to reject the null. That means you cannot conclude that ‘a’ and ‘b’ are equivalent. Note the wording here – the paradox is that ‘not equivalent’ does not mean the same thing as different. I know. I know. semantics!<br />
+<br /></p>
+<p>Now just as another sanity check, let’s run a standard t-test on a:z.</p>
 <pre class="r"><code>t.test(d$a, d$z)</code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
@@ -222,7 +226,27 @@ print(dense11)</code></pre>
 ## sample estimates:
 ## mean of x mean of y 
 ##  9.946806 11.029016</code></pre>
-<p>Here’s some real data from a study we are working on now where we examined pupillary responses. It is important to control for blink rates in this design, and during review, the question was raised whether there were more blinks in a dark room vs. a bright room. We hypothesized that blink rates would be equivalent. To show this, we need an equivalence test.</p>
+<p><br /></p>
+<p>Here are some real data from a study we are working on now where we examined very subtle pupillary responses. It is important to control for blink rates in this type of experiment. During peer review, a referee raised the logical question of whether were more blinks as participants completed the task of listening for a particular word while sitting in a dark room vs. a bright room. We hypothesized that blink rates would be equivalent because the task is equally demanding in both lighting conditions but we need evidence! Enter the TOST test.</p>
+<p><br /> Here are some analyses of mean blink rate (number of samples with 0mm values / total number of samples) per participant, per lighting condition.</p>
+<pre class="r"><code>exp1 &lt;- read.csv(&quot;Blinks_Exp1.csv&quot;, header = T)
+exp2 &lt;- read.csv(&quot;Blinks_Exp2.csv&quot;, header = T)
+head(exp1)</code></pre>
+<pre><code>##   X participant Lighting numNAs numObservations percentBlinks
+## 1 1           2   Bright      0            2876      0.000000
+## 2 2           2   Middle     61            2874      2.122477
+## 3 3           2     Dark     93            2877      3.232534
+## 4 4           3   Bright      0            2875      0.000000
+## 5 5           3   Middle      0            2874      0.000000
+## 6 6           3     Dark     88            2875      3.060870</code></pre>
+<pre class="r"><code>head(exp2)</code></pre>
+<pre><code>##   X lightCond participant numNAs numObservations percentBlinks
+## 1 1    bright           2   3224           21514     14.985591
+## 2 2    bright           3   3246           21507     15.092760
+## 3 3    bright           4   1501           21453      6.996690
+## 4 4    bright           5    755           21561      3.501693
+## 5 5    bright           6   1882           15170     12.406065
+## 6 6    bright           7   3525           18252     19.312952</code></pre>
 </div>
 </div>
 
