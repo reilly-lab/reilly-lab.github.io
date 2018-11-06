@@ -128,12 +128,12 @@ $(document).ready(function () {
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>Our aim is to evaluate whether a machine can detect a recurring seuqential pattern within a univariate time series (i.e., a single vector of observations that are temporally ordered and autocorrelated). This just looks like a long vector of numbers. These numbers could reflect continuous measurement of temperatures, pupil size, etc. Here are the libraries we’ll use –</p>
+<p>Our aim is to evaluate whether a machine can detect a recurring sequential pattern within a univariate time series (i.e., a single vector of observations that are temporally ordered and autocorrelated). This just looks like a long vector of numbers. These numbers could reflect continuous measurement of temperatures, pupil size, etc. Here are the libraries we’ll use –</p>
 <pre class="r"><code>library(TraMineR)
 library(zoo)
 library(tidyverse)
 library(TSMining)</code></pre>
-<p>We’ll start by creating some dummy data in which structure a repeating pattern such as a specific number sequence. Here it’s 1-10 repeated 10 times. We’ll call that <strong>signal1</strong>. We’ll also create a different number pattern (21,22,23,24,25,24, 23,22,21) repeated 10x and call that <strong>signal2</strong>. Each of these signals constitute a little pattern. Time series researchers call these snippets ‘subsequences’. Motifs are repeating subsequences.</p>
+<p>We’ll start by creating some dummy data in which structure a repeating pattern such as a specific number sequence. Here it’s 1-10 repeated 10 times. We’ll call that <strong>signal1</strong>. We’ll also create a different number pattern (21,22,23,24,25,24, 23,22,21) repeated 10x and call that <strong>signal2</strong>. Each of these signals constitute a little pattern. Time series researchers call these snippets ‘subsequences’. A motif is a special case of a repeating subsequence. For example, we might expect to see a few years of cooling temperatures with a gradual return to baseline in the air temperature after a giant volcano explodes. This motif is a meaningful pattern nested within climate time series.</p>
 <pre class="r"><code>signal1 &lt;- data.frame(rep(seq(1, 10), 10))
 colnames(signal1) &lt;- &quot;obs&quot;
 signal2 &lt;- data.frame(rep(c(21, 22, 23, 24, 25, 24, 22, 21), 10))
