@@ -2619,12 +2619,12 @@ color: #666699;
 }
 
 pre {
-max-height: 300px;
+max-height: 350px;
 background-color: #E4ECE7;
 overflow-y: auto;
 }
 pre[class] {
-max-height: 100px;
+max-height: 250px;
 }
 
 a:link {
@@ -2635,6 +2635,30 @@ a:hover {
 color: #4B0082;
 }
 
+.list-group-item.active:hover {
+z-index: 1;
+color: red;
+background-color: #E4ECE7;
+border-color: #E4ECE7;
+}
+.list-group-item.active:hover {
+z-index: 2;
+color: red;
+background-color: #E4ECE7;
+border-color: #E4ECE7;
+}
+.list-group-item.active {
+z-index: 1;
+color: black;
+background-color: #E4ECE7;
+border-color: #E4ECE7;
+}
+.list-group-item.active {
+z-index: 2;
+color: black;
+background-color: #E4ECE7;
+border-color: #E4ECE7;
+}
 </style>
 
 
@@ -2830,11 +2854,6 @@ div.tocify {
 </div>
 
 
-<style type="text/css">
-h1, #TOC>ul>li {
-  color: #4B0082;
-}
-</style>
 <p>This session will cover Chapter 8 of the Field et al. text. We will focus on binary logistic regression (not polychotomous or multinomial)</p>
 <pre class="r"><code>library(tidyverse)
 library(car) #regression diagnostics, lots of other regression functions
